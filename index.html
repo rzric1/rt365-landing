@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RT365 AI Clip Studio — GPU-Powered Clip Extraction</title>
+  <meta name="description" content="Turn 2-hour podcasts into 20 viral clips in under 5 minutes. Runs on your GPU. Your content never leaves your machine.">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0a0a; color: #f0f0f0; }
+    /* NAV */
+    nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid #1a1a1a; }
+    .logo { font-size: 20px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+    .logo span { color: #3b82f6; }
+    .nav-cta { background: #3b82f6; color: white; padding: 10px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; }
+    /* HERO */
+    .hero { text-align: center; padding: 100px 40px 80px; max-width: 900px; margin: 0 auto; }
+    .badge { display: inline-block; background: #1a2744; color: #3b82f6; border: 1px solid #2a3d6a; padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-bottom: 32px; }
+    h1 { font-size: clamp(40px, 6vw, 72px); font-weight: 900; line-height: 1.05; letter-spacing: -2px; margin-bottom: 24px; }
+    h1 em { color: #3b82f6; font-style: normal; }
+    .subtitle { font-size: 20px; color: #888; line-height: 1.6; max-width: 600px; margin: 0 auto 48px; }
+    .hero-cta { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary { background: #3b82f6; color: white; padding: 16px 40px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 18px; display: inline-block; }
+    .btn-primary:hover { background: #2563eb; }
+    .btn-secondary { background: #1a1a1a; color: #ccc; padding: 16px 32px; border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 16px; border: 1px solid #333; display: inline-block; }
+    .price-note { margin-top: 16px; color: #666; font-size: 14px; }
+    /* STATS */
+    .stats { display: flex; justify-content: center; gap: 60px; padding: 60px 40px; border-top: 1px solid #1a1a1a; border-bottom: 1px solid #1a1a1a; flex-wrap: wrap; }
+    .stat { text-align: center; }
+    .stat-number { font-size: 40px; font-weight: 900; color: #3b82f6; }
+    .stat-label { font-size: 14px; color: #666; margin-top: 4px; }
+    /* HOW IT WORKS */
+    .section { padding: 80px 40px; max-width: 1000px; margin: 0 auto; }
+    .section-label { color: #3b82f6; font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+    h2 { font-size: clamp(28px, 4vw, 44px); font-weight: 800; letter-spacing: -1px; margin-bottom: 16px; }
+    .section-sub { color: #888; font-size: 18px; margin-bottom: 60px; }
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px; }
+    .step { background: #111; border: 1px solid #222; border-radius: 12px; padding: 32px 24px; }
+    .step-num { font-size: 13px; font-weight: 700; color: #3b82f6; margin-bottom: 16px; }
+    .step h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+    .step p { color: #888; font-size: 15px; line-height: 1.6; }
+    /* WHY */
+    .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+    .why-card { background: #111; border: 1px solid #222; border-radius: 12px; padding: 28px; }
+    .why-icon { font-size: 28px; margin-bottom: 16px; }
+    .why-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+    .why-card p { color: #888; font-size: 15px; line-height: 1.6; }
+    /* VS TABLE */
+    .vs-table { width: 100%; border-collapse: collapse; margin-top: 40px; }
+    .vs-table th { padding: 16px; text-align: center; font-size: 14px; font-weight: 700; border-bottom: 1px solid #222; }
+    .vs-table th:first-child { text-align: left; }
+    .vs-table td { padding: 14px 16px; text-align: center; font-size: 14px; border-bottom: 1px solid #111; }
+    .vs-table td:first-child { text-align: left; color: #ccc; }
+    .vs-table tr:hover td { background: #111; }
+    .check { color: #22c55e; font-size: 18px; }
+    .cross { color: #ef4444; font-size: 18px; }
+    .highlight-col { background: #0d1a33; }
+    .vs-table th.highlight-col { color: #3b82f6; }
+    /* PRICING */
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; max-width: 900px; margin: 0 auto; }
+    .price-card { background: #111; border: 1px solid #222; border-radius: 16px; padding: 36px 28px; text-align: center; }
+    .price-card.featured { border-color: #3b82f6; background: #0d1a33; }
+    .price-tag { font-size: 48px; font-weight: 900; color: #fff; }
+    .price-period { color: #888; font-size: 14px; margin-bottom: 24px; }
+    .price-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+    .price-desc { color: #888; font-size: 14px; margin-bottom: 24px; }
+    .price-features { list-style: none; margin-bottom: 32px; text-align: left; }
+    .price-features li { padding: 8px 0; font-size: 14px; color: #ccc; border-bottom: 1px solid #1a1a1a; }
+    .price-features li::before { content: "✓ "; color: #22c55e; font-weight: 700; }
+    .price-btn { display: block; background: #3b82f6; color: white; padding: 14px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 16px; }
+    .price-btn.outline { background: transparent; border: 1px solid #333; color: #ccc; }
+    /* REQUIREMENTS */
+    .req-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+    .req-item { background: #111; border: 1px solid #222; border-radius: 10px; padding: 20px; }
+    .req-item h4 { font-size: 14px; font-weight: 700; color: #3b82f6; margin-bottom: 8px; }
+    .req-item p { color: #888; font-size: 13px; line-height: 1.5; }
+    /* FAQ */
+    .faq { max-width: 700px; margin: 0 auto; }
+    .faq-item { border-bottom: 1px solid #1a1a1a; padding: 24px 0; }
+    .faq-item h3 { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
+    .faq-item p { color: #888; font-size: 15px; line-height: 1.7; }
+    /* CTA SECTION */
+    .cta-section { text-align: center; padding: 100px 40px; background: linear-gradient(135deg, #0d1a33 0%, #0a0a0a 100%); border-top: 1px solid #1a2744; }
+    .cta-section h2 { font-size: clamp(28px, 4vw, 48px); font-weight: 900; margin-bottom: 16px; }
+    .cta-section p { color: #888; font-size: 18px; margin-bottom: 40px; }
+    /* FOOTER */
+    footer { text-align: center; padding: 40px; border-top: 1px solid #1a1a1a; color: #444; font-size: 13px; }
+    footer a { color: #666; text-decoration: none; }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="logo">RT<span>365</span></div>
+  <a href="YOUR_STRIPE_PAYMENT_LINK_HERE" class="nav-cta">Buy Now — $199</a>
+</nav>
+<!-- HERO -->
+<section class="hero">
+  <div class="badge">🎬 GPU-Powered • Local Processing • Privacy First</div>
+  <h1>Turn your podcast into<br><em>20 viral clips</em><br>in 5 minutes</h1>
+  <p class="subtitle">AI clip extraction that runs on your own GPU. Your video never leaves your machine. Pay once, use forever.</p>
+  <div class="hero-cta">
+    <a href="YOUR_STRIPE_PAYMENT_LINK_HERE" class="btn-primary">Get RT365 — $199 lifetime</a>
+    <a href="#how-it-works" class="btn-secondary">See how it works ↓</a>
+  </div>
+  <p class="price-note">One-time payment · No subscription · No cloud upload · Works on RTX 3080+</p>
+</section>
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><div class="stat-number">5 min</div><div class="stat-label">To process a 2-hour podcast</div></div>
+  <div class="stat"><div class="stat-number">$0.28</div><div class="stat-label">Avg OpenAI cost per episode</div></div>
+  <div class="stat"><div class="stat-number">17+</div><div class="stat-label">Clips per episode on average</div></div>
+  <div class="stat"><div class="stat-number">0</div><div class="stat-label">Frames uploaded to any cloud</div></div>
+</div>
+<!-- HOW IT WORKS -->
+<section class="section" id="how-it-works">
+  <div class="section-label">How It Works</div>
+  <h2>From raw podcast to ready-to-post clips</h2>
+  <p class="section-sub">Four steps. Five minutes. Zero cloud uploads.</p>
+  <div class="steps">
+    <div class="step"><div class="step-num">STEP 01</div><h3>Upload your video</h3><p>Drop in any MP4, MOV, or MKV up to 4GB. Local file path supported — no copy needed.</p></div>
+    <div class="step"><div class="step-num">STEP 02</div><h3>AI analyzes every moment</h3><p>faster-whisper transcribes on your GPU. GPT-4o scores every segment for virality, emotion, and hook strength.</p></div>
+    <div class="step"><div class="step-num">STEP 03</div><h3>Review and edit</h3><p>See all clips with virality scores, transcripts, and start/end times. Adjust any clip with one click.</p></div>
+    <div class="step"><div class="step-num">STEP 04</div><h3>Export or send to Resolve</h3><p>9:16 vertical MP4s with burned-in captions. Or send directly to DaVinci Resolve with one click.</p></div>
+  </div>
+</section>
+<!-- WHY RT365 -->
+<section class="section">
+  <div class="section-label">Why RT365</div>
+  <h2>Built different from every other clip tool</h2>
+  <p class="section-sub">Every competitor uploads your video to their servers. RT365 doesn't.</p>
+  <div class="why-grid">
+    <div class="why-card"><div class="why-icon">🔒</div><h3>Your content stays on your machine</h3><p>No video is ever uploaded to RT365 servers. Your footage, your guests, your stories — private.</p></div>
+    <div class="why-card"><div class="why-icon">⚡</div><h3>RTX GPU acceleration</h3><p>NVENC hardware encoding and CUDA transcription. Process a 2-hour podcast 5-20x faster than cloud tools.</p></div>
+    <div class="why-card"><div class="why-icon">🎬</div><h3>DaVinci Resolve native</h3><p>The only clip tool that sends markers and timelines directly into Resolve Studio. Built for real editors.</p></div>
+    <div class="why-card"><div class="why-icon">🔑</div><h3>Bring your own OpenAI key</h3><p>You control AI costs. A typical episode costs $0.20–$0.50 in API fees. No markup, no mystery pricing.</p></div>
+    <div class="why-card"><div class="why-icon">💳</div><h3>Pay once, own it forever</h3><p>No monthly subscription. Buy it, use it forever. Updates included for 12 months.</p></div>
+    <div class="why-card"><div class="why-icon">🎯</div><h3>Multi-pass AI scoring</h3><p>Virality score, hook quality, boundary repair, diversity deduplication. The same pipeline used by professional editors.</p></div>
+  </div>
+</section>
+<!-- VS TABLE -->
+<section class="section">
+  <div class="section-label">Comparison</div>
+  <h2>RT365 vs the alternatives</h2>
+  <table class="vs-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th class="highlight-col">RT365</th>
+        <th>Opus Clip</th>
+        <th>Vidyo.ai</th>
+        <th>Descript</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Local GPU processing</td><td class="highlight-col"><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+      <tr><td>Video stays on your machine</td><td class="highlight-col"><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+      <tr><td>DaVinci Resolve integration</td><td class="highlight-col"><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td>Partial</td></tr>
+      <tr><td>One-time pricing</td><td class="highlight-col"><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+      <tr><td>Bring your own API key</td><td class="highlight-col"><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+      <tr><td>NVENC hardware encoding</td><td class="highlight-col"><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+      <tr><td>Monthly cost</td><td class="highlight-col">$0 (paid once)</td><td>$19–$99/mo</td><td>$29–$79/mo</td><td>$12–$24/mo</td></tr>
+    </tbody>
+  </table>
+</section>
+<!-- PRICING -->
+<section class="section" style="text-align:center;">
+  <div class="section-label">Pricing</div>
+  <h2>Simple, honest pricing</h2>
+  <p class="section-sub" style="margin-bottom:48px;">Pay once. Own it forever. No surprises.</p>
+  <div class="pricing-grid">
+    <div class="price-card">
+      <h3>Creator</h3>
+      <div class="price-tag">$79</div>
+      <div class="price-period">one time</div>
+      <p class="price-desc">For solo podcasters and YouTubers</p>
+      <ul class="price-features">
+        <li>1 PC license</li>
+        <li>Unlimited exports</li>
+        <li>All caption styles</li>
+        <li>Email support</li>
+        <li>12 months of updates</li>
+      </ul>
+      <a href="YOUR_STRIPE_PAYMENT_LINK_HERE" class="price-btn outline">Buy Creator</a>
+    </div>
+    <div class="price-card featured">
+      <h3>Professional ⭐</h3>
+      <div class="price-tag">$199</div>
+      <div class="price-period">one time — most popular</div>
+      <p class="price-desc">For serious creators and editors</p>
+      <ul class="price-features">
+        <li>1 PC license</li>
+        <li>Unlimited exports</li>
+        <li>DaVinci Resolve integration</li>
+        <li>All caption presets</li>
+        <li>Priority email support</li>
+        <li>Lifetime updates</li>
+      </ul>
+      <a href="YOUR_STRIPE_PAYMENT_LINK_HERE" class="price-btn">Buy Professional</a>
+    </div>
+    <div class="price-card">
+      <h3>Agency</h3>
+      <div class="price-tag">$199</div>
+      <div class="price-period">per seat / one time</div>
+      <p class="price-desc">For teams and production companies</p>
+      <ul class="price-features">
+        <li>Up to 5 PC licenses</li>
+        <li>Everything in Professional</li>
+        <li>Slack support</li>
+        <li>Priority onboarding</li>
+        <li>Lifetime updates</li>
+      </ul>
+      <a href="mailto:rzric1@missionprojectcyber.com" class="price-btn outline">Contact for Agency</a>
+    </div>
+  </div>
+</section>
+<!-- REQUIREMENTS -->
+<section class="section">
+  <div class="section-label">System Requirements</div>
+  <h2>What you need to run RT365</h2>
+  <div class="req-grid" style="margin-top:40px;">
+    <div class="req-item"><h4>GPU</h4><p>NVIDIA RTX 3080 or better recommended. RTX 3060 minimum. 8GB+ VRAM.</p></div>
+    <div class="req-item"><h4>OS</h4><p>Windows 10 or Windows 11 (64-bit). macOS support coming soon.</p></div>
+    <div class="req-item"><h4>OpenAI Key</h4><p>You need your own OpenAI API key. Typical cost: $0.20–$0.50 per episode.</p></div>
+    <div class="req-item"><h4>RAM & Storage</h4><p>16GB RAM minimum. 10GB free disk space for installation.</p></div>
+  </div>
+</section>
+<!-- FAQ -->
+<section class="section">
+  <div class="section-label">FAQ</div>
+  <h2 style="text-align:center; margin-bottom:48px;">Common questions</h2>
+  <div class="faq">
+    <div class="faq-item"><h3>Does my video get uploaded anywhere?</h3><p>No. Your video never leaves your machine. The only data sent externally is the transcript text to OpenAI for analysis — and that's done with store=false so OpenAI doesn't retain it either.</p></div>
+    <div class="faq-item"><h3>What does the OpenAI API cost?</h3><p>Typically $0.20–$0.50 per hour of content using the SAFE profile. You control this entirely — it comes directly out of your own OpenAI account.</p></div>
+    <div class="faq-item"><h3>Do I need DaVinci Resolve?</h3><p>No. Resolve integration is optional. You can export 9:16 MP4 clips with burned-in captions without Resolve. The Resolve integration is a bonus for professional editors.</p></div>
+    <div class="faq-item"><h3>What GPU do I need?</h3><p>An NVIDIA RTX GPU with 8GB+ VRAM is recommended. RTX 3080 and above works great. The app will fall back to CPU processing if no NVIDIA GPU is found, but it will be slower.</p></div>
+    <div class="faq-item"><h3>Is this a subscription?</h3><p>No. You pay once and own the software. The Professional tier includes lifetime updates. The Creator tier includes 12 months of updates.</p></div>
+    <div class="faq-item"><h3>Can I use it on multiple computers?</h3><p>Each license is valid for one PC. Contact support to transfer your license to a new machine.</p></div>
+    <div class="faq-item"><h3>What if I want a refund?</h3><p>7-day refund policy, no questions asked. Email rzric1@missionprojectcyber.com.</p></div>
+  </div>
+</section>
+<!-- FINAL CTA -->
+<div class="cta-section">
+  <h2>Ready to 10x your content output?</h2>
+  <p>Join creators who are turning every podcast into 20 clips — without uploading a single frame to the cloud.</p>
+  <a href="YOUR_STRIPE_PAYMENT_LINK_HERE" class="btn-primary" style="font-size:20px; padding:20px 48px;">Get RT365 — $199 lifetime</a>
+  <p style="margin-top:16px; color:#444; font-size:13px;">7-day refund policy · 1 PC license · Lifetime updates on Pro</p>
+</div>
+<footer>
+  <p>© 2026 RT365 AI Clip Studio · <a href="mailto:rzric1@missionprojectcyber.com">Support</a> · Built for creators who take their content seriously</p>
+</footer>
+</body>
+</html>
